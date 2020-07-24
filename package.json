@@ -1,0 +1,27 @@
+{
+  "name": "fullstackopen-backend",
+  "version": "1.0.0",
+  "description": "This repository contains my solutions for the exercises for the backend part from the Course [Full Stack](https://fullstackopen.com/en/about), held by the [Department of Computer Science](https://www.helsinki.fi/en/computer-science) at the University of Helsinki, Finland.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ludivinepoussier/fullstackopen-backend.git"
+  },
+  "author": "\"Ludivine Poussier\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ludivinepoussier/fullstackopen-backend/issues"
+  },
+  "homepage": "https://github.com/ludivinepoussier/fullstackopen-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
