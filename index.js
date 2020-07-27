@@ -2,9 +2,20 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
-app.use(morgan('tiny'));
+const morganLog = morgan((tokens, req, res) => {
+    const customLog = [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms'
+    ].join(' ')
+
+    return req.method === 'POST' ? `${customLog} ${JSON.stringify(req.body)}` : customLog
+})
 
 app.use(express.json())
+app.use(morganLog)
 
 let persons = [
     {
@@ -39,7 +50,6 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/info', (request, response) => {
     const date = new Date()
-    // response.send(`Phonebook has info for ${persons.length} people`)
     response.send(
         `Phonebook has info for ${persons.length} people. 
         <br/>
