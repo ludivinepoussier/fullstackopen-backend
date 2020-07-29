@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
 
 const morganLog = morgan((tokens, req, res) => {
     const customLog = [
@@ -14,6 +15,7 @@ const morganLog = morgan((tokens, req, res) => {
     return req.method === 'POST' ? `${customLog} ${JSON.stringify(req.body)}` : customLog
 })
 
+app.use(cors())
 app.use(express.json())
 app.use(morganLog)
 
