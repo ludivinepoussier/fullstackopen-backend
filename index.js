@@ -5,7 +5,6 @@ const app = express()
 const Person = require('./models/person')
 
 const cors = require('cors')
-const person = require('./models/person')
 
 const morganLog = morgan((tokens, req, res) => {
     const customLog = [
@@ -20,32 +19,9 @@ const morganLog = morgan((tokens, req, res) => {
 })
 
 app.use(cors())
+app.use(express.static('build'))
 app.use(express.json())
 app.use(morganLog)
-app.use(express.static('build'))
-
-let persons = [
-    {
-        "name": "Arto Hellas",
-        "num": "040-123456",
-        "id": 1
-    },
-    {
-        "name": "Ada Lovelace",
-        "num": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "num": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mary Poppendieck",
-        "num": "39-23-6423122",
-        "id": 4
-    }
-]
 
 app.get('/', (request, response) => {
     response.send('<h1>Phonebook App</h1>')
@@ -73,20 +49,6 @@ app.get('/api/persons/:id', (request, response) => {
         response.json(person)
     })
 })
-
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(note => note.id !== id)
-
-    response.status(204).end()
-})
-
-const generateId = () => {
-    const maxId = persons.length > 0
-        ? Math.max(...persons.map(n => n.id))
-        : 0
-    return maxId + 1
-}
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
@@ -117,6 +79,14 @@ app.post('/api/persons', (request, response) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
+})
+
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 const PORT = process.env.PORT
