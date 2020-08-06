@@ -23,26 +23,26 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(morganLog)
 
-app.get('/', (request, response) => {
-    response.send('<h1>Phonebook App</h1>')
-})
-
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(notes => {
         response.json(notes)
     })
 })
 
-// GET TO THIS LATER
-
-// app.get('/info', (request, response) => {
-//     const date = new Date()
-//     response.send(
-//         `Phonebook has info for ${persons.length} people. 
-//         <br/>
-//         <br/>
-//         ${date}`)
-// })
+app.get('/info', (request, response) => {
+    const date = new Date()
+    Person
+        .estimatedDocumentCount()
+        .then(personCount => {
+            console.log(personCount)
+            response.send(
+                `Phonebook has info for ${personCount} people. 
+        <br/>
+        <br/>
+        ${date}`)
+        })
+        .catch(error => next(error))
+})
 
 app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
