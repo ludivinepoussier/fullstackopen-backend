@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+// to avoid error message: DeprecationWarning: Mongoose: `findOneAndUpdate()` 
+// and `findOneAndDelete()` without the `useFindAndModify` option set to false are deprecated.
+mongoose.set('useFindAndModify', false)
 
 const url = process.env.MONGODB_URI
 
