@@ -71,29 +71,23 @@ app.put('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
-
-    if (!body.num) {
-        return response.status(400).json({
-            error: 'number missing'
-        })
-    }
-
-    if (!body.name) {
-        return response.status(400).json({
-            error: 'name missing'
-        })
-    }
 
     const person = new Person({
         name: body.name,
         num: body.num,
     })
 
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
-    })
+    person
+        .save()
+        .then(savedPerson => {
+            return savedPerson.toJSON()
+        })
+        .then(savedAndFormattedPerson => {
+            response.json(savedAndFormattedPerson)
+        })
+        .catch(error => next(error)) 
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {

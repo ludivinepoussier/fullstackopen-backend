@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
-// to avoid error message: DeprecationWarning: Mongoose: `findOneAndUpdate()` 
-// and `findOneAndDelete()` without the `useFindAndModify` option set to false are deprecated.
+
+const uniqueValidator = require('mongoose-unique-validator');
+
+// to avoid error message: DeprecationWarning
 mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true);
 
 const url = process.env.MONGODB_URI
 
@@ -16,9 +19,11 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     })
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    num: String,
+    name: { type: String, required: true, unique: true, uniqueCaseInsensitive: true},
+    num: { type: String, required: true}
 })
+
+personSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' })
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
