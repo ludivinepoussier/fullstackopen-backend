@@ -25,17 +25,17 @@ const personSchema = new mongoose.Schema({
 
 personSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' })
 
-// https://github.com/Automattic/mongoose/issues/6578
-mongoose.plugin(schema => {
-    schema.pre('findOneAndUpdate', setRunValidators);
-    schema.pre('updateMany', setRunValidators);
-    schema.pre('updateOne', setRunValidators);
-    schema.pre('update', setRunValidators);
-});
+// // https://github.com/Automattic/mongoose/issues/6578
+// mongoose.plugin(schema => {
+//     schema.pre('findOneAndUpdate', setRunValidators);
+//     schema.pre('updateMany', setRunValidators);
+//     schema.pre('updateOne', setRunValidators);
+//     schema.pre('update', setRunValidators);
+// });
 
-function setRunValidators() {
-    this.setOptions({ runValidators: true });
-}
+// function setRunValidators() {
+//     this.setOptions({ runValidators: true });
+// }
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
