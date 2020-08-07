@@ -19,8 +19,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     })
 
 const personSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true, uniqueCaseInsensitive: true},
-    num: { type: String, required: true}
+    name: { type: String, required: true, minlength: 3, unique: true, uniqueCaseInsensitive: true},
+    num: { type: String, required: true, minlength: 8}
 })
 
 personSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' })
