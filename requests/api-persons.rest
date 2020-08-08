@@ -1,0 +1,99 @@
+
+# @name postHappyPath
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "any-name-{{$timestamp}}",
+    "num": "111-222-333"
+}
+###
+
+# @name postErrorNameUnique
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "{{postHappyPath.response.body.name}}",
+    "num": "111-222-333"
+}
+###
+
+# @name postErrorNameSmallerThan3Char
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "An",
+    "num": "111-222-333"
+}
+###
+
+# @name postErrorNameIsRequired
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "",
+    "num": "111-222-333"
+}
+###
+
+# @name postErrorNumSmallerThan8Char
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "any-name-{{$timestamp}}",
+    "num": "111-222"
+}
+###
+
+# @name postErrorNumIsRequired
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "any-name-{{$timestamp}}",
+    "num": ""
+}
+###
+
+# @name getAllHappyPath
+GET http://localhost:3001/api/persons
+###
+
+# @name getOneHappyPath
+GET http://localhost:3001/api/persons/{{postHappyPath.response.body.id}}
+###
+
+# @name putHappyPath
+PUT http://localhost:3001/api/persons/{{postHappyPath.response.body.id}}
+Content-Type: application/json
+
+{
+    "name": "name-is-ignored-on-PUT-handler",
+    "num": "{{postHappyPath.response.body.num}}(2)"
+}
+###
+
+# @name putErrorNumSmallerThan8Char
+PUT http://localhost:3001/api/persons/{{postHappyPath.response.body.id}}
+Content-Type: application/json
+
+{
+    "num": "111-222"
+}
+###
+
+# @name putErrorNumIsRequired
+PUT http://localhost:3001/api/persons/{{postHappyPath.response.body.id}}
+Content-Type: application/json
+
+{
+    "num": ""
+}
+###
+
+# @name deleteHappyPath
+DELETE http://localhost:3001/api/persons/{{postHappyPath.response.body.id}}
