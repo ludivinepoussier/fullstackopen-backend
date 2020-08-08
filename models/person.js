@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const uniqueValidator = require('mongoose-unique-validator');
+const uniqueValidator = require('mongoose-unique-validator')
 
 // to avoid error message: DeprecationWarning
 mongoose.set('useFindAndModify', false)
@@ -27,15 +27,24 @@ personSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be un
 
 // // https://github.com/Automattic/mongoose/issues/6578
 // mongoose.plugin(schema => {
-//     schema.pre('findOneAndUpdate', setRunValidators);
-//     schema.pre('updateMany', setRunValidators);
-//     schema.pre('updateOne', setRunValidators);
-//     schema.pre('update', setRunValidators);
-// });
+//     schema.pre('findOneAndUpdate', setRunValidators)
+//     schema.pre('updateMany', setRunValidators)
+//     schema.pre('updateOne', setRunValidators)
+//     schema.pre('update', setRunValidators)
+// })
 
 // function setRunValidators() {
-//     this.setOptions({ runValidators: true });
+//     this.setOptions({ runValidators: true })
 // }
+
+// Person.findOneAndUpdate(
+//     { num: 'old-num' },
+//     { num: 'new-num' },
+//     { runValidators: true, context: 'query' },
+//     function (err) {
+//         console.log(err)
+//     }
+// )
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
