@@ -31,7 +31,7 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', (request, response, next) => {
   const date = new Date()
   Person
     .estimatedDocumentCount()
@@ -94,7 +94,7 @@ app.post('/api/persons', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(_result => {
       response.status(204).end()
     })
     .catch(error => next(error))
